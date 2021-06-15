@@ -1,0 +1,365 @@
+{% extends "main/base.html" %}
+{% block content %}
+{% load static %}
+
+<body class="horizontal-layout horizontal-menu 2-columns   menu-expanded" data-open="click"
+data-menu="horizontal-menu" data-col="2-columns">
+  
+  <!-- Horizontal navigation-->
+  <div class="app-content container center-layout mt-2">
+    <div class="content-wrapper">
+      <div class="content-header row">
+      </div>
+      <div class="content-body">
+
+  <div class="row">
+          <div class="col-lg-12 col-md-12 col-12">
+            <div class="card">
+              <div class="card-header border-0-bottom">
+                <center><h1 class="display-4">YOUTUBE BROWSER</h1></center>
+
+               <center>  {% load crispy_forms_tags %}{% crispy new_YT_form new_YT_form.helper %}</center>
+             
+            
+            
+              </div>
+            </div>
+          </div>    
+  </div>   	
+
+  {% if usuarios %}
+
+  <!--stats-->
+        <div class="row">
+          <div class="col-xl-3 col-lg-6 col-12">
+            <div class="card">
+              <div class="card-content">
+                <div class="card-body">
+                  <div class="media">
+                    <div class="media-body text-left w-100">
+                    
+                       <h3 class="primary">Username</h3>
+                       <span>{{usuarios.nombre}}</span>                 
+                    </div>
+                    <div class="media-right media-middle">
+                     <img src="{{usuarios.imagen}}" width="50" height="50"></img>                    
+                    </div>
+                  </div>
+                  
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-3 col-lg-6 col-12">
+            <div class="card">
+              <div class="card-content">
+                <div class="card-body">
+                  <div class="media">
+                    <div class="media-body text-left w-100">
+                      <h3 class="danger">Views</h3>
+                      <span>{{ usuarios.views }}</span>
+                    </div>
+                    <div class="media-right media-middle">
+                      <img src ="{% static 'app-assets/images/yt.png' %}" width="50" height="50"></img>
+                    </div>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-3 col-lg-6 col-12">
+            <div class="card">
+              <div class="card-content">
+                <div class="card-body">
+                  <div class="media">
+                    <div class="media-body text-left w-100">
+                      <h3 class="success">Subscribers</h3>
+                      <span>{{ usuarios.follows }}</span>
+                    </div>
+                    <div class="media-right media-middle">
+                      <i class="icon-layers success font-large-2 float-right"></i>
+                    </div>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-3 col-lg-6 col-12">
+            <div class="card">
+              <div class="card-content">
+                <div class="card-body">
+                  <div class="media">
+                    <div class="media-body text-left w-100">
+                      <h3 class="warning">Creation Date</h3>
+                      <span>{{usuarios.fecha_creacion}}</span>
+                    </div>
+                    <div class="media-right media-middle">
+                      <i class="icon-globe warning font-large-2 float-right"></i>
+                    </div>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--/stats-->
+
+ <!-- Analytics spakline & chartjs  -->
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-12">
+            <div class="card">
+              <div class="card-header border-0-bottom">
+                <h4 class="card-title">Views Overview (Last 10 Videos)</h4>
+                <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
+                <div class="heading-elements">
+                </div>
+              </div>
+              <div class="card-content">
+                <div class="card-body">
+                  <div class="row my-1">
+                    <div class="col-lg-4 col-12">
+                    </div>
+                    <div class="col-lg-4 col-12">
+                      <div class="text-center">
+                      {% if videos %}
+                        <h3>{{views_tabla|last}}</h3>
+                      {% else %}
+                        <h3>N/D</h3>
+                      {% endif %}
+                        <p class="text-muted">Last Video Views</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="chartjs">
+                        <canvas id="line-stacked-area2" height="350"></canvas>
+                      </div>
+                      <ul class="list-inline text-center mt-1">
+                          <h6><i class="fa fa-circle nardo"></i>
+                            <span>Views per Video</span>
+                            <i class="fa fa-circle nardo2"></i>
+                            <span>Likes per Video</span>
+                          </h6>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+<div class="row match-height">
+          <div class="col-xl-6 col-lg-12">
+            <div class="card">
+              <div class="card-header border-0">
+          
+           
+              
+          
+                 <h3 class="card-title">LAST VIDEO</h3>
+                <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
+             
+              </div>
+              <div class="card-content">
+                <div class="card-body">
+                
+               
+                  {% if  videos.0.nombre %}
+            
+
+                  <h4><b> Title: </b>{{videos.0.nombre}}</h4>
+                  <h4><b> Ended at: </b>{{videos.0.fecha_creacion}}</h4>
+                   <div class="card-header border-0"></div>
+                  <center><a href="https://www.youtube.com/watch?v={{videos.0.id}}" target="_blank"><button type="button" class="btn btn-primary btn-block">GO TO VIDEO</button></a></center>
+
+                  {% else %}
+                <h4><b> Title: N/D </b></h4>
+                  <h4><b> Ended at: N/D </b></h4>
+                
+                  {% endif %}
+           
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-6 col-lg-12">
+            <div class="card">
+              <div class="card-header border-0">
+                <h4 class="card-title">Last 10 Videos</h4>
+                <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
+                <div class="heading-elements">
+                  <ul class="list-inline mb-0">
+                  </ul>
+                </div>
+              </div>
+              <div class="card-content">
+                <div id="goal-list-scroll" class="table-responsive height-250 position-relative">
+                  <table class="table mb-0">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Title</th>
+                        <th>Views</th>
+                        <th>Likes</th>
+                        <th>Dislikes</th>
+                        <th>Comments</th>
+        
+                      </tr>
+                    </thead>
+                    <tbody>
+
+                    {% for v in videos %}
+                      {% if forloop.counter < 11%}
+                      <tr>
+                        <th scope="row">{{forloop.counter}}</th>
+                        <td>{{v.nombre}}</td>
+                        <td>{{v.views}}</td>
+                        <td>{{v.likes}}</td>
+                        <td>{{v.dislikes}}</td>
+                        <td>{{v.comments}}</td>
+                        
+                      </tr>
+                      {% endif %}
+                    {% endfor %}
+                     
+                      
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+ <div class="row">
+          <div class="col-lg-12 col-md-12 col-12">
+            <div class="card">
+              <div class="card-header border-0-bottom">
+                <center><h2>LAST VIDEOS</h2></center>
+                
+              </div>
+              <div class="card-content">
+                <div class="card-body">
+
+                <div class="row match-height">
+
+{% for v in videos %}
+    {% if forloop.counter < 5%}
+
+            <div class="col-md-6 col-sm-12">
+              <div class="card text-center bg-transparent">
+                <div class="card-content">
+                  <div class="card-body">
+                  
+                    <iframe width="373" height="210" src="{{ v.url_emb }}" title="Video Player" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <h3 class="card-title">{{v.nombre}}</h3>
+                     <p class="card-text">Upload date: {{v.fecha_creacion}}</p>
+                  
+                  
+
+
+                   
+                  </div>
+                </div>
+              </div>
+            </div>
+    {% endif %}
+{% endfor %}
+
+ </div>
+                  
+            </div>
+          </div>
+        </div>
+
+
+
+
+
+
+  {% else %}
+
+      
+
+      {% if usuario != usuarios.nombre %}
+
+          <div class="row">
+          <div class="col-lg-12 col-md-12 col-12">
+            <div class="card">
+              <div class="card-header bg-danger border-0-bottom">
+                <center><h2> Username: <b>{{usuario}}</b> doesn't exist!</h2></center>
+                </div>
+              </div>
+            </div>    
+          </div>
+
+      {% endif %}
+
+  <div class="row">
+          <div class="col-lg-12 col-md-12 col-12">
+            <div class="card">
+              <div class="card-header border-0-bottom">
+                <h4 class="card-title">Top Categories</h4>
+
+                <div class="heading-elements">
+                  <ul class="list-inline mb-0">
+
+                  </ul>
+                </div>
+              </div>
+              <div class="card-content">
+                <div class="card-body">
+
+                 <div id="audience-list-scroll" class="table-responsive height-300 position-relative">
+                  <table class="table mb-0">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Title</th>
+                        <th>Category Link</th>
+
+                      </tr>
+                    </thead>
+                    <tbody>
+                    {% for c in categories %}
+
+                      <tr>
+                        <th scope="row">{{forloop.counter}}</th>
+                        <td>{{c.title}}</td>
+                        <td><a href="https://www.youtube.com/channel/{{c.Channel_id}}" target="_blank" >Go to Channel</a></td>
+                      </tr>
+
+                    {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+  {% endif %}
+
+{% endblock %}
+  

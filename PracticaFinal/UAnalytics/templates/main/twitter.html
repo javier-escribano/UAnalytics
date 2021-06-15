@@ -1,0 +1,265 @@
+{% extends "main/base.html" %}
+{% block content %}
+{% load static %}
+
+<body class="horizontal-layout horizontal-menu 2-columns   menu-expanded" data-open="click"
+data-menu="horizontal-menu" data-col="2-columns">
+  
+  <!-- Horizontal navigation-->
+  <div class="app-content container center-layout mt-2">
+    <div class="content-wrapper">
+      <div class="content-header row">
+      </div>
+      <div class="content-body">
+
+  <div class="row">
+          <div class="col-lg-12 col-md-12 col-12">
+            <div class="card">
+              <div class="card-header border-0-bottom">
+                <center><h1 class="display-4">TWITTER BROWSER</h1></center>
+
+               <center>  {% load crispy_forms_tags %}{% crispy twitter_form twitter_form.helper %}</center>
+             
+            
+            
+              </div>
+            </div>
+          </div>    
+  </div>  
+
+  {% if usuarios %}
+    <!--stats-->
+        <div class="row">
+          <div class="col-xl-3 col-lg-6 col-12">
+            <div class="card">
+              <div class="card-content">
+                <div class="card-body">
+                  <div class="media">
+                    <div class="media-body text-left w-100">                   
+                       <h3 class="primary">Username</h3>
+                       <span>{{usuarios.nombre}}</span>                    
+                    </div>
+                    <div class="media-right media-middle">
+                     <img src="{{usuarios.logo}}" width="50" height="50"></img>                    
+                    </div>
+                  </div>
+                  
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-3 col-lg-6 col-12">
+            <div class="card">
+              <div class="card-content">
+                <div class="card-body">
+                  <div class="media">
+                    <div class="media-body text-left w-100">
+                      <h3 class="danger">Verified</h3>
+                      {% if usuarios.verified %}
+                      <span>Yes</span>
+                      {% else %}
+                      <span>No</span>
+                      {% endif %}
+                    </div>
+                    <div class="media-right media-middle">
+                      <img src ="{% static 'app-assets/images/twitter.png' %}" width="52" height="52"></img>
+                    </div>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-3 col-lg-6 col-12">
+            <div class="card">
+              <div class="card-content">
+                <div class="card-body">
+                  <div class="media">
+                    <div class="media-body text-left w-100">
+                      <h3 class="success">Total Followers</h3>
+                      {% if usuarios.followers %}
+                      <span>{{usuarios.followers}}</span>
+                      {% else %}
+                      <span>0</span>
+                      {% endif %}
+                    </div>
+                    <div class="media-right media-middle">
+                      <i class="icon-layers success font-large-2 float-right"></i>
+                    </div>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-3 col-lg-6 col-12">
+            <div class="card">
+              <div class="card-content">
+                <div class="card-body">
+                  <div class="media">
+                    <div class="media-body text-left w-100">
+                      <h3 class="warning">Creation Date</h3>
+                      <span>{{usuarios.fecha_creacion}}</span>
+                    </div>
+                    <div class="media-right media-middle">
+                      <i class="icon-globe warning font-large-2 float-right"></i>
+                    </div>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--/stats-->
+         <!-- Analytics spakline & chartjs  -->
+        {% if tweets %}
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-12">
+            <div class="card">
+              <div class="card-header border-0-bottom">
+                <h4 class="card-title">Views and Favs Last 100 tweets</h4>
+                <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
+                <div class="heading-elements">
+                </div>
+              </div>
+              <div class="card-content">
+                <div class="card-body">
+                  <div class="row my-1">
+                    <div class="col-lg-4 col-12">
+                      <div class="text-center">
+                        <h3>{{totalr}}</h3>
+                        <p class="text-muted">Total RTs last 100 Tweets</p>
+                      </div>
+                    </div>
+                    <div class="col-lg-4 col-12">
+                    </div>
+                    <div class="col-lg-4 col-12">
+                      <div class="text-center">
+                   
+                        <h3>{{totall}}</h3>
+        
+                        <p class="text-muted">Total Favs last 100 Tweets</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="chartjs">
+                        <canvas id="line-stacked-area3" height="350"></canvas>
+                      </div>
+                      <ul class="list-inline text-center mt-1">
+                          <h6><i class="fa fa-circle nardo4"></i>
+                            <span>RT Per Day</span>
+                            <i class="fa fa-circle nardo3"></i>
+                            <span>Favs Per Day</span>
+                          </h6>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--/ Analytics spakline & chartjs  -->
+
+
+
+        <div class="row match-height">
+
+          {% for t in tweets %}
+          {% if forloop.counter < 5%}
+          <div class="col-xl-6 col-lg-12">
+            <div class="card">
+              <div class="card-header border-0">
+          
+            
+              
+           
+             
+              </div>
+              <div class="card-content">
+                 <div class="card-body">
+                
+                    <h4 class="card-title info">{{t.fecha_creacion}}</h4>
+                    <p class="card-text">{{t.text}}</p>
+                    <p class="card-text"> <i class="fa fa-retweet"></i>&nbsp; {{t.retweets}} &nbsp;&nbsp; <i class="fa fa-heart"></i>&nbsp;{{t.likes}} &nbsp;&nbsp; <i class="fa fa-comment"></i>&nbsp;{{t.replies}}</p>
+                  
+
+                    <a href="https://twitter.com/{{usuarios.nombre}}/status/{{t.id_tweet}}" target="_blank" class="btn btn-outline-info">Go to Tweet!</a>
+                    <br>
+                    <br>
+                     {% if t.url%}
+                     {% for u in t.url %}
+                     <p><b> Link {{forloop.counter}}: </b><a href="{{u}}">{{u}}</a></p>
+
+                    {% endfor %}
+                    {% endif %}
+                    
+                  </div>
+              </div>
+            </div>
+          </div>
+          {% endif %}
+          {% endfor %}
+          
+        </div>
+
+
+        <!-- Column Chart -->
+          <div class="row">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-header">
+                  <h4 class="card-title">Last 100 tweets replies</h4>
+                  <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
+                  
+                </div>
+                <div class="card-content collapse show">
+                  <div class="card-body">
+                    <canvas id="column-chart" height="400"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+         
+    {% else %}
+
+      <div class="row">
+          <div class="col-lg-12 col-md-12 col-12">
+            <div class="card">
+              <div class="card-header bg-danger border-0-bottom">
+                <center><h2> Username: <b>{{usuario}}</b> is protected!</h2></center>
+                </div>
+              </div>
+            </div>    
+          </div>
+
+    {% endif %}
+
+  {% else %}
+
+      
+
+      {% if usuario != usuarios.nombre %}
+
+          <div class="row">
+          <div class="col-lg-12 col-md-12 col-12">
+            <div class="card">
+              <div class="card-header bg-danger border-0-bottom">
+                <center><h2> Username: <b>{{usuario}}</b> doesn't exist!</h2></center>
+                </div>
+              </div>
+            </div>    
+          </div>
+
+      {% endif %}
+    
+
+  {% endif %}
+{% endblock %}

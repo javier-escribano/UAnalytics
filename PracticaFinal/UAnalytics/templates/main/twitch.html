@@ -1,0 +1,487 @@
+{% extends "main/base.html" %}
+{% block content %}
+{% load static %}
+
+<body class="horizontal-layout horizontal-menu 2-columns   menu-expanded" data-open="click"
+data-menu="horizontal-menu" data-col="2-columns">
+  
+  <!-- Horizontal navigation-->
+  <div class="app-content container center-layout mt-2">
+    <div class="content-wrapper">
+      <div class="content-header row">
+      </div>
+      <div class="content-body">
+
+  <div class="row">
+          <div class="col-lg-12 col-md-12 col-12">
+            <div class="card">
+              <div class="card-header border-0-bottom">
+                <center><h1 class="display-4">TWITCH BROWSER</h1></center>
+
+               <center>  {% load crispy_forms_tags %}{% crispy new_product_form new_product_form.helper %}</center>
+             
+            
+            
+              </div>
+            </div>
+          </div>    
+  </div>   	
+
+  
+
+
+ {% if usuarios %}
+
+ 
+        
+  
+
+   <!--stats-->
+        <div class="row">
+          <div class="col-xl-3 col-lg-6 col-12">
+            <div class="card">
+              <div class="card-content">
+                <div class="card-body">
+                  <div class="media">
+                    <div class="media-body text-left w-100">
+                    
+                       <h3 class="primary">Username</h3>
+                       {% if channel_selected.is_live %}
+                      <span>{{usuarios.nombre}}  <i class="fa fa-circle danger"></i></span>
+                      {% else %}
+                       <span>{{usuarios.nombre}}</span>
+                      {% endif %}
+                    </div>
+                    <div class="media-right media-middle">
+                     <img src="{{usuarios.imagen}}" width="50" height="50"></img>                    
+                    </div>
+                  </div>
+                  
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-3 col-lg-6 col-12">
+            <div class="card">
+              <div class="card-content">
+                <div class="card-body">
+                  <div class="media">
+                    <div class="media-body text-left w-100">
+                      <h3 class="danger">Partner</h3>
+                      {% if usuarios.broadcaster_type == 'partner' %}
+                      <span>Yes</span>
+                      {% else %}
+                      <span>No</span>
+                      {% endif %}
+                    </div>
+                    <div class="media-right media-middle">
+                      <img src ="{% static 'app-assets/images/logo/twitch_logo.png' %}" width="60" height="50"></img>
+                    </div>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-3 col-lg-6 col-12">
+            <div class="card">
+              <div class="card-content">
+                <div class="card-body">
+                  <div class="media">
+                    <div class="media-body text-left w-100">
+                      <h3 class="success">Total Followers</h3>
+                      {% if total_follows.total %}
+                      <span>{{total_follows.total}}</span>
+                      {% else %}
+                      <span>0</span>
+                      {% endif %}
+                    </div>
+                    <div class="media-right media-middle">
+                      <i class="icon-layers success font-large-2 float-right"></i>
+                    </div>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-3 col-lg-6 col-12">
+            <div class="card">
+              <div class="card-content">
+                <div class="card-body">
+                  <div class="media">
+                    <div class="media-body text-left w-100">
+                      <h3 class="warning">Creation Date</h3>
+                      <span>{{usuarios.fecha_creacion}}</span>
+                    </div>
+                    <div class="media-right media-middle">
+                      <i class="icon-globe warning font-large-2 float-right"></i>
+                    </div>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--/stats-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <!-- Analytics spakline & chartjs  -->
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-12">
+            <div class="card">
+              <div class="card-header border-0-bottom">
+                <h4 class="card-title">Views Overview (Last 100 Streams)</h4>
+                <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
+                <div class="heading-elements">
+                </div>
+              </div>
+              <div class="card-content">
+                <div class="card-body">
+                  <div class="row my-1">
+                    <div class="col-lg-4 col-12">
+                      <div class="text-center">
+                        <h3>{{usuarios.views}}</h3>
+                        <p class="text-muted">Total Views</p>
+                      </div>
+                    </div>
+                    <div class="col-lg-4 col-12">
+                    </div>
+                    <div class="col-lg-4 col-12">
+                      <div class="text-center">
+                      {% if videos %}
+                        <h3>{{views_tabla|last}}</h3>
+                      {% else %}
+                        <h3>N/D</h3>
+                      {% endif %}
+                        <p class="text-muted">Max. Views In A Month</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="chartjs">
+                        <canvas id="line-stacked-area" height="350"></canvas>
+                      </div>
+                      <ul class="list-inline text-center mt-1">
+                          <h6><i class="fa fa-circle success"></i>
+                            <span>Views Per Month</span>
+                          </h6>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--/ Analytics spakline & chartjs  -->
+       
+        <!-- Audience by country & users visit-->
+        <div class="row match-height">
+          <div class="col-xl-6 col-lg-12">
+            <div class="card">
+              <div class="card-header border-0">
+          
+              {% if channel_selected.is_live %}
+              
+                <h3 class="card-title">Streaming Now <i class="fa fa-circle danger"></i></h3>
+              {% else %}
+                 <h3 class="card-title">Last Stream - Currently OFFLINE</h3>
+                <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
+              {% endif %}
+              </div>
+              <div class="card-content">
+                <div class="card-body">
+                 {% if channel_selected.is_live %}
+                  <h4><b> Title: </b>{{channel_selected.title}}</h4>
+                  <h4><b> Started at: </b>{{channel_selected.started_at}}</h4>
+                  <h4><b> Game: </b>{{channel_selected.game_name}}</h4>
+                  <h4><b> Language: </b>{{channel_selected.lan}}</h4>
+                  <div class="card-header border-0"></div>
+                  <center><a href="https://twitch.tv/{{channel_selected.login}}" target="_blank"><button type="button" class="btn btn-danger btn-block">LIVE NOW (CLICK TO WATCH)</button></a></center>
+                {% else %}
+                  {% if  videos.0.nombre %}
+            
+
+                  <h4><b> Title: </b>{{videos.0.nombre}}</h4>
+                  <h4><b> Ended at: </b>{{videos.0.fecha_creacion}}</h4>
+                   <div class="card-header border-0"></div>
+                  <center><a href="https://twitch.tv/{{channel_selected.login}}" target="_blank"><button type="button" class="btn btn-primary btn-block">GO TO CHANNEL</button></a></center>
+
+                  {% else %}
+                <h4><b> Title: N/D </b></h4>
+                  <h4><b> Ended at: N/D </b></h4>
+                
+                  {% endif %}
+                {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-6 col-lg-12">
+            <div class="card">
+              <div class="card-header border-0">
+                <h4 class="card-title">Last 50 Streams</h4>
+                <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
+                <div class="heading-elements">
+                  <ul class="list-inline mb-0">
+                  </ul>
+                </div>
+              </div>
+              <div class="card-content">
+                <div id="goal-list-scroll" class="table-responsive height-250 position-relative">
+                  <table class="table mb-0">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Title</th>
+                        <th>Views</th>
+        
+                      </tr>
+                    </thead>
+                    <tbody>
+
+                    {% for v in videos %}
+                      {% if forloop.counter < 51%}
+                      <tr>
+                        <th scope="row">{{forloop.counter}}</th>
+                        <td>{{v.nombre}}</td>
+                        <td>{{v.views}}</td>
+                        
+                      </tr>
+                      {% endif %}
+                    {% endfor %}
+                     
+                      
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--/ Audience by country  & users visit -->
+        <!-- Analytics map based session -->
+        
+
+
+  <div class="row">
+          <div class="col-lg-12 col-md-12 col-12">
+            <div class="card">
+              <div class="card-header border-0-bottom">
+                <center><h2>LAST STREAMS</h2></center>
+                
+              </div>
+              <div class="card-content">
+                <div class="card-body">
+
+                <div class="row match-height">
+
+{% for v in videos %}
+  {% if forloop.counter < 5%}
+
+            <div class="col-md-6 col-sm-12">
+              <div class="card text-center bg-transparent">
+                <div class="card-content">
+                  <div class="card-body">
+                  {% if v.imagen == '' and channel_selected.is_live %}
+                   <a href="https://twitch.tv/{{channel_selected.login}}" target="_blank"><img src="{% static 'app-assets/images/twitch_live.jpg' %}"  class="mb-1 border-danger"  width="270"></a>
+                   <h3 class="card-title">{{v.nombre}} </h3>
+                    <p class="card-text">LIVE RIGHT NOW! <i class="fa fa-circle danger"></i></p>
+                  {% else %}
+                    <a href="{{v.url}}" target="_blank"><img src="{{v.imagen}}" class="mb-1 border-success"  width="270"></a>
+                    <h3 class="card-title">{{v.nombre}}</h3>
+                     <p class="card-text">Upload date: {{v.fecha_creacion}}</p>
+                  {% endif %}
+                  
+
+
+                   
+                  </div>
+                </div>
+              </div>
+            </div>
+{% endif %}
+            
+{% endfor %}
+
+
+
+
+
+
+
+ </div>
+                  
+            </div>
+          </div>
+        </div>
+
+
+        <!-- Analytics map based session -->
+        <!-- Bounce Rate & List -->
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-12">
+            <div class="card">
+              <div class="card-header border-0-bottom">
+                <h4 class="card-title">Last 100 Followers</h4>
+
+                <div class="heading-elements">
+                  <ul class="list-inline mb-0">
+
+                  </ul>
+                </div>
+              </div>
+              <div class="card-content">
+                <div class="card-body">
+
+                 <div id="audience-list-scroll" class="table-responsive height-300 position-relative">
+                  <table class="table mb-0">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Follower</th>
+                        <th>Followed at</th>
+
+                      </tr>
+                    </thead>
+                    <tbody>
+                    {% for f in followers_list %}
+
+                    {% if forloop.counter < 101%}
+                      <tr>
+                        <th scope="row">{{forloop.counter}}</th>
+                        <td>{{f.nombre_seguidor}}</td>
+                        <td>{{f.followed_at}}</td>
+
+                      </tr>
+                    {% endif %}
+                    {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+        
+
+          
+
+        <!--/ Bounce Rate & List -->
+      </div>
+    </div>
+  </div>
+  <!-- ////////////////////////////////////////////////////////////////////////////-->
+ 
+{% else %}
+
+      {% if usuario != channel_selected.login %}
+
+          <div class="row">
+          <div class="col-lg-12 col-md-12 col-12">
+            <div class="card">
+              <div class="card-header bg-danger border-0-bottom">
+                <center><h2> Username: <b>{{usuario}}</b> doesn't exist!</h2></center>
+                </div>
+              </div>
+            </div>    
+          </div>   	
+  {% endif %}
+
+        <div class="row match-height">
+          <div class="col-xl-4 col-lg-12">
+            <div class="card">
+              <div class="card-content">
+                <div class="card-body sales-growth-chart">
+                  <div class="chart-title">
+                    <h1 class="display-4">TOP 1 GAME</h1>
+                    <span class="card-title">{{topgames.0.nombre}}</span>
+                  </div>
+                     <div class="card-header border-0"></div>
+                 
+                  <center><img src="{{topgames.0.imagen}}"></center>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-8 col-lg-12">
+            <div class="card">
+              <div class="card-header border-0">
+                <h4 class="card-title">Top 10 Games</h4>
+                <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
+                <div class="heading-elements">
+                  <ul class="list-inline mb-0">
+                    
+                  </ul>
+                </div>
+              </div>
+              <div class="card-content">
+                <div id="audience-list-scroll" class="table-responsive height-300 position-relative">
+                  <table class="table mb-0">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <!-- <th>ID</th> -->
+                        <th>Game details</th>
+                        
+                      </tr>
+                    </thead>
+                    <tbody>
+                    {% for g in topgames %}
+                    
+                    {% if forloop.counter < 11%}
+                      <tr>
+                        <th scope="row">{{forloop.counter}}</th>
+                        <td>{{g.nombre}}</td>
+                       <!-- <td>{{g.id}}</td> -->
+                        <td><a href="https://www.twitch.tv/directory/game/{{g.nombre}}" target="_blank">See game details</a></td>
+                       
+                      </tr>
+                    {% endif %}
+                    {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+
+{% endif %}
+  {% endblock %}
+  

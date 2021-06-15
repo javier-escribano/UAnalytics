@@ -1,0 +1,43 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% block content %}
+
+
+
+<body class="horizontal-layout horizontal-menu 2-columns   menu-expanded" data-open="click"
+data-menu="horizontal-menu" data-col="2-columns">
+  <!-- fixed-top-->
+  <!-- ////////////////////////////////////////////////////////////////////////////-->
+  <!-- Horizontal navigation-->
+  <div class="app-content container center-layout mt-2">
+    <div class="content-wrapper">
+      <div class="content-header row">
+      </div>
+      <div class="content-body">
+ <div class="content-body">
+        <div class="row full-height-vh-with-nav">
+          <div class="col-12 d-flex justify-content-center">
+            <div class="col-lg-6 col-10">
+              <img class="img-fluid mx-auto d-block pb-3 pt-4 width-65-per" src="{% static 'app-assets/images/logo/stack-logo-dark-big.png' %}"
+              alt="Stack Search">
+
+              <div class="row py-2">
+                <div class="col-12 text-center">
+                 <h2> Choose Platform! </h2>
+                 <br> 
+                 <a href="twitch" class="btn btn-social width-200 mr-1 mb-1 btn-twitch">
+                            <span class="fa fa-twitch font-medium-3"></span> Twitch Stats </a>
+                 <a href="youtube" class="btn btn-social width-200 mr-1 mb-1 btn-youtube">
+                            <span class="fa fa-youtube font-medium-3"></span> YouTube Stats </a>
+                 <a href="twitter" class="btn btn-social width-200 mr-1 mb-1 btn-twitter">
+                            <span class="fa fa-twitter font-medium-3"></span> Twitter Stats </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+     
+ 
+</body>
+
+{% endblock %}
